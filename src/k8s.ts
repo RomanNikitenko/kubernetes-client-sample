@@ -16,6 +16,7 @@ function getCoreApi(): k8s.CoreV1Api {
 async function getPod(): Promise<Array<k8s.V1Secret>> {
     const coreV1API = getCoreApi();
     const namespace = process.env.DEVWORKSPACE_NAMESPACE;
+		console.log('=== NAMESPACE: ', namespace);
     if (!namespace) {
         throw new Error('Can not get a pod: DEVWORKSPACE_NAMESPACE env variable is not defined');
     }
