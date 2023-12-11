@@ -24,7 +24,7 @@ async function getPod(): Promise<Array<k8s.V1Secret>> {
         const { body } = await coreV1API.listNamespacedPod(namespace, undefined, undefined, undefined, undefined, undefined);
 
         console.log('=== POD ITEMS: ');
-        console.dir(body.items, { depth: 10 });
+        console.dir(body.items, { depth: 2 });
 
         return body.items;
     } catch (error) {
