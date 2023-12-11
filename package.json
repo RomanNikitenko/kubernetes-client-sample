@@ -1,0 +1,17 @@
+{
+  "name": "kubernetes-client-sample",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "compile": "tsc -b",
+    "test": "npm run compile && node lib/k8s"
+  },
+  "author": "",
+  "license": "EPL-2.0",
+  "dependencies": {
+    "@kubernetes/client-node": "^0.19.0"
+  },
+  "devDependencies": {
+    "typescript": "~4.4.2"
+  }
+}
