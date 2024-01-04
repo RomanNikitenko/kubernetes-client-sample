@@ -8,6 +8,9 @@ function getCoreApi(): k8s.CoreV1Api {
   if (!coreV1API) {
     k8sConfig = new k8s.KubeConfig();
     k8sConfig.loadFromCluster();
+    const currentCluster = k8sConfig.getCurrentCluster();
+    console.info('=== current Cluster ', currentCluster?.server);
+    
     coreV1API = k8sConfig.makeApiClient(k8s.CoreV1Api);
   }
   return coreV1API;
