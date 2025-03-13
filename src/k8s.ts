@@ -2,40 +2,30 @@ import * as k8s from '@kubernetes/client-node';
 
 let k8sConfig: k8s.KubeConfig;
 let coreV1API: k8s.CoreV1Api;
-console.info('==== TEST K8S API === ');
+let customObjectsApi: k8s.CustomObjectsApi;
 
-function getCoreApi(): k8s.CoreV1Api {
-  if (!coreV1API) {
+export function getKubeConfig(): k8s.KubeConfig {
+  if (!k8sConfig) {
     k8sConfig = new k8s.KubeConfig();
     k8sConfig.loadFromCluster();
     const currentCluster = k8sConfig.getCurrentCluster();
     console.info('=== current Cluster ', currentCluster?.server);
-    
+  }
+  return k8sConfig;
+}
+
+export function getCoreApi(): k8s.CoreV1Api {
+  if (!coreV1API) {
+    const k8sConfig = getKubeConfig();
     coreV1API = k8sConfig.makeApiClient(k8s.CoreV1Api);
   }
   return coreV1API;
 }
 
-async function getPod(): Promise<Array<k8s.V1Secret>> {
-  const coreV1API = getCoreApi();
-  const namespace = process.env.DEVWORKSPACE_NAMESPACE;
-  console.log('=== NAMESPACE: ', namespace);
-  if (!namespace) {
-    throw new Error('Can not get a pod: DEVWORKSPACE_NAMESPACE env variable is not defined');
+export function getCustomObjectsApi(): k8s.CustomObjectsApi {
+  if (!customObjectsApi) {
+    const k8sConfig = getKubeConfig();;
+    customObjectsApi = k8sConfig.makeApiClient(k8s.CustomObjectsApi);
   }
-
-  try {
-    const { body } = await coreV1API.listNamespacedPod(namespace, undefined, undefined, undefined, undefined, undefined);
-
-    console.log('=== POD ITEMS: ');
-    console.dir(body.items, { depth: 2 });
-
-    return body.items;
-  } catch (error) {
-    console.log('=== ERROR: ');
-    console.dir(error);
-    return [];
-  }
+  return customObjectsApi;
 }
-
-getPod();

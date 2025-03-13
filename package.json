@@ -4,7 +4,8 @@
   "description": "",
   "scripts": {
     "compile": "tsc -b",
-    "test": "npm run compile && node lib/k8s"
+    "test-pod": "clear && npm run compile && node lib/pod",
+    "test-custom-resource": "clear && npm run compile && node lib/custom-resource"
   },
   "author": "",
   "license": "EPL-2.0",
